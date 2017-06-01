@@ -6,6 +6,7 @@
 # get_ipython().magic(u'matplotlib nbagg')
 import pickle
 import pandas as pd
+import pickle
 import numpy as np
 import re
 from sklearn.cross_validation import train_test_split
@@ -17,18 +18,18 @@ norm=Normalizer()
 
 #performing a basic analysis on the data from kaggle house sales
 train=pd.read_csv('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\train.csv')
-print train.head(5)
+# print train.head(5)
 
 
 
 # In[100]:
 
-print train.describe()
+# print train.describe()
 
 
 # In[101]:
 
-print train.columns
+# print train.columns
 
 
 # In[102]:
@@ -45,20 +46,20 @@ print train.columns
 
 # In[103]:
 
-print train.dtypes
+# print train.dtypes
 
 
 # In[104]:
 
-print train.info()
+# print train.info()
 
 
 # In[105]:
 
 numeric_features_index=train.dtypes[train.dtypes!='object'].index
 object_features_index=train.dtypes[train.dtypes=='object'].index
-print object_features_index
-print numeric_features_index
+# print object_features_index
+# print numeric_features_index
 
 
 # In[106]:
@@ -80,7 +81,7 @@ for i in train.dtypes.index:
 
 # In[108]:
 
-print train.head(5)
+# print train.head(5)
 
 
 # In[109]:
@@ -97,7 +98,7 @@ list_y=train['SalePrice'].values.tolist()
 
 # In[111]:
 
-print numeric_features_index
+# print numeric_features_index
 numeric_features_index.tolist().remove(numeric_features_index[0])
 
 
@@ -116,12 +117,12 @@ numeric_features_index.tolist().remove(numeric_features_index[0])
 
 for i in train.dtypes[train.dtypes=='float64'].index:
     train[i]=train[i].fillna(np.mean(train[i]))
-    print len(train[i])
+    # print len(train[i])
 
 
 # In[114]:
 
-print train.info()
+# print train.info()
 
 
 # In[115]:
@@ -132,14 +133,14 @@ print train.info()
 # In[116]:
 
 cols_to_plot=object_features_index.tolist()
-print cols_to_plot
+# print cols_to_plot
 hist_Contour= [i for i in train['LandContour'].values.tolist() ]
-print train.columns
+# print train.columns
 corrcoeff =[]
 numeric_features_index
 for i in numeric_features_index:
     corrcoeff.append(np.corrcoef(train[i],train['SalePrice']))
-print corrcoeff
+# print corrcoeff
 
 
 # In[136]:
@@ -152,7 +153,7 @@ numeric_features_index=train.dtypes.index
 # numeric_features_index=numeric_features_index.tolist()
 
 numeric_features=(numeric_features_index).tolist()
-print numeric_features
+# print numeric_features
 numeric_features.remove('SalePrice')
 
 
