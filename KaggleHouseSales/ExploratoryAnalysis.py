@@ -3,7 +3,7 @@
 
 # In[99]:
 
-# get_ipython().magic(u'matplotlib nbagg')
+get_ipython().magic(u'matplotlib nbagg')
 import pickle
 import pandas as pd
 import numpy as np
@@ -106,7 +106,7 @@ numeric_features_index.tolist().remove(numeric_features_index[0])
 
 # In[112]:
 
-# plt.hist(x=train['SaleCondition'])
+plt.hist(x=train['SaleCondition'])
 
 
 
@@ -169,20 +169,20 @@ regr_xgb.fit(xtrain,ytrain)
 ypred=[]
 ypred=regr_xgb.predict(xvalid)
 rmse=np.sqrt(mean_squared_error(np.log(ypred+1),np.log(yvalid+1)))
-# xgboost.plot_importance(regr_xgb)
+xgboost.plot_importance(regr_xgb)
 print rmse
 
 
 # In[121]:
 
-x=[]
-for i in range(len(ypred)):
-    x.append(i)
+# x=[]
+# for i in range(len(ypred)):
+#     x.append(i)
       
-plt.plot(x,yvalid)
-plt.plot(x,ypred)
-# plt.colorbar()
-plt.show()
+# plt.scatter(x,yvalid)
+# plt.scatter(x,ypred)
+# # plt.colorbar()
+# plt.show()
 
 
 # In[ ]:
