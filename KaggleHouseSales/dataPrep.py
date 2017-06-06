@@ -18,54 +18,32 @@ norm=Normalizer()
 
 #performing a basic analysis on the data from kaggle house sales
 train=pd.read_csv('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\train.csv')
-# print train.head(5)
+test=pd.read_csv('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\test.csv')
+train=train.drop('Id',1)
+test=test.drop('Id',1)
 
+numeric_features_train=train.dtypes[train.dtypes!='object'].index
+object_features_train=train.dtypes[train.dtypes=='object'].index
+file1=open('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\featureIndices','wb')
 
-
-# In[100]:
-
-# print train.describe()
-
-
-# In[101]:
-
-# print train.columns
-
-
-# In[102]:
-
-# # # let us check the skewness of the data
-# # from scipy.stats import skew
-# # skewed_features=train[numeric_features_index].apply(lambda x: skew(x))
-# cols_to_plot=object_features_index.tolist()
-# print cols_to_plot
-# # cols_to_plot.remove('SalePrice')
-
-# # train.plot(x=cols_to_plot[7:8],kind='bar')
-
-
-# In[103]:
-
-# print train.dtypes
-
-
-# In[104]:
-
-# print train.info()
-
-
-# In[105]:
-
-numeric_features_index=train.dtypes[train.dtypes!='object'].index
-object_features_index=train.dtypes[train.dtypes=='object'].index
 # print object_features_index
 # print numeric_features_index
+numeric_features_test=test.dtypes[test.dtypes!='object'].index
+object_features_test=test.dtypes[test.dtypes=='object'].index
+pickle.dump([numeric_features_test,object_features_test],file1)
+file1.close()
+
 
 
 # In[106]:
 
-for i in numeric_features_index:
+for i in numeric_features_train:
     train[i].fillna(train[i].mean())
+
+
+for i in numeric_features_test:
+    test[i].fillna(test[i].mean())
+
 print train.info()
 
 
@@ -75,9 +53,12 @@ le =LabelEncoder()
 
 for i in train.dtypes.index:
     
-    if i not in (numeric_features_index):
+    if i not in (numeric_features_train):
         train[i]=le.fit_transform(train[i])
-
+for i in test.dtypes.index:
+    
+    if i not in (numeric_features_test):
+        test[i]=le.fit_transform(test[i])
 
 # In[108]:
 
@@ -95,69 +76,44 @@ for i in train.dtypes.index:
     train[i].drop(pd.isnull(train[i]))
 list_y=train['SalePrice'].values.tolist()    
 
+numeric_features_train.tolist().remove(numeric_features_train[0])
+numeric_features_test.tolist().remove(numeric_features_test[0])
 
-# In[111]:
-
-# print numeric_features_index
-numeric_features_index.tolist().remove(numeric_features_index[0])
-
-
-    
-
-
-# In[112]:
-
-# plt.hist(x=train['SaleCondition'])
-
-
-
-
-
-# In[113]:
 
 for i in train.dtypes[train.dtypes=='float64'].index:
     train[i]=train[i].fillna(np.mean(train[i]))
     # print len(train[i])
+for i in test.dtypes[test.dtypes=='float64'].index:
+    test[i]=test[i].fillna(np.mean(test[i]))
 
 
-# In[114]:
-
-# print train.info()
-
-
-# In[115]:
-
-# now we see the missing data has all been filled since the len of all columns match in our dataframe
-
-
-# In[116]:
-
-cols_to_plot=object_features_index.tolist()
+cols_to_plot=object_features_train.tolist()
 # print cols_to_plot
 hist_Contour= [i for i in train['LandContour'].values.tolist() ]
 # print train.columns
 corrcoeff =[]
-numeric_features_index
-for i in numeric_features_index:
+# numeric_features_index
+for i in numeric_features_train:
     corrcoeff.append(np.corrcoef(train[i],train['SalePrice']))
-# print corrcoeff
-
-
-# In[136]:
 
 from sklearn.linear_model import LinearRegression
 from xgboost.sklearn import XGBRegressor
 regr =XGBRegressor(n_estimators=100)
 
-numeric_features_index=train.dtypes.index
-# numeric_features_index=numeric_features_index.tolist()
+numeric_features_train=train.dtypes.index
+numeric_features_test=test.dtypes.index
 
-numeric_features=(numeric_features_index).tolist()
-# print numeric_features
-numeric_features.remove('SalePrice')
+numeric_features_train=(numeric_features_train).tolist()
 
+numeric_features_train.remove('SalePrice')
 
-xtrain,xvalid,ytrain,yvalid=train_test_split(train[numeric_features],train['SalePrice'])
+xTrain=train[numeric_features_train]
+yTrain=train['SalePrice']
+xTest=test[numeric_features_test]
+file=open('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\DumpFile','wb')
+pickle.dump([xTrain,yTrain,xTest],file)
+file.close()
+xtrain,xvalid,ytrain,yvalid=train_test_split(train[numeric_features_train],train['SalePrice'])
 
 
 # In[140]:
