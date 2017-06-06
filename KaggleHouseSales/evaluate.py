@@ -189,7 +189,7 @@ if __name__=='__main__':
 	sales_submission=runAlgorithm()
 	subData=pd.read_csv('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\sample_submission.csv')
 	subData['SalePrice']=sales_submission
-	# subData.to_csv('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\submission.csv')
+	subData.to_csv('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\sub2.csv')
 
 
 
