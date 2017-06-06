@@ -19,20 +19,22 @@ continuous_feature_index,categorical_feature_index=pickle.load(file)
 file.close()
 file=open('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\DumpFile','rb')
 xTrain,yTrain,xTest=pickle.load(file)
+xTrain=[xTrain,yTrain]
+xTrain=pd.concat(xTrain,axis=1)
 file.close()
-cont_feat=continuous_feature_index.tolist()
+cont_feat=continuous_feature_index
 # cont_feat.remove('Id')
 # xTrain=xTrain[cont_feat]
 # xTest=xTest[cont_feat]
 # Continuous
 # Index([u'Id', u'MSSubClass', u'LotFrontage', u'LotArea', u'OverallQual',
-#        u'OverallCond', u'YearBuilt', u'YearRemodAdd', u'MasVnrArea',
-#        u'BsmtFinSF1', u'BsmtFinSF2', u'BsmtUnfSF', u'TotalBsmtSF', u'1stFlrSF',
-#        u'2ndFlrSF', u'LowQualFinSF', u'GrLivArea', u'BsmtFullBath',
-#        u'BsmtHalfBath', u'FullBath', u'HalfBath', u'BedroomAbvGr',
+#        u'OverallCond', .u'YearBuilt', u'YearRemodAdd', u'MasVnrArea',
+#        u'BsmtFinSF1', .u'BsmtFinSF2', u'BsmtUnfSF', u'TotalBsmtSF', u'1stFlrSF',
+#        u'2ndFlrSF', .u'LowQualFinSF', u'GrLivArea', u'BsmtFullBath',
+#        .u'BsmtHalfBath', u'FullBath', u'HalfBath', u'BedroomAbvGr',
 #        u'KitchenAbvGr', u'TotRmsAbvGrd', u'Fireplaces', u'GarageYrBlt',
-#        u'GarageCars', u'GarageArea', u'WoodDeckSF', u'OpenPorchSF',
-#        u'EnclosedPorch', u'3SsnPorch', u'ScreenPorch', u'PoolArea', u'MiscVal',
+#        u'GarageCars', u'GarageArea', u'WoodDeckSF', .u'OpenPorchSF',
+#        .u'EnclosedPorch', .u'3SsnPorch', .u'ScreenPorch', .u'PoolArea', .u'MiscVal',
 #        u'MoSold', u'YrSold', u'SalePrice']
 # 
 # Categorical
@@ -50,17 +52,46 @@ cont_feat=continuous_feature_index.tolist()
 # plt.show()
 print xTrain.info()
 norm=Normalizer()
-xTrain[cont_feat]=norm.fit_transform(xTrain[cont_feat])
+# xTrain[cont_feat]=norm.fit_transform(xTrain[cont_feat])
 
 # f,ax=plt.subplots()
 plt.figure(1)
-for i in cont_feat:
+# df=[xTrain[continuous_feature_index]]
+# df.append(yTrain)
+# print df
+# df=pd.dataframe()
+# print df.info()
+# res=[xTrain,yTrain]
+# correlation=pd.concat(res,axis=1)
+# corr = correlation.corr()
+# fig, ax = plt.subplots(figsize=(20,20))
+# ax.matshow(corr)
+# plt.xticks(range(len(corr.columns)), corr.columns);
+# plt.yticks(range(len(corr.columns)), corr.columns);
+# # plt.matshow(xTrain[cont_feat].corr())
+# plt.show()
+xTrain=xTrain.drop(xTrain[xTrain.MasVnrArea>1200].index,axis=0)
+xTrain=xTrain.drop(xTrain[xTrain.BsmtFinSF1>3000].index,axis=0)
+xTrain=xTrain.drop(xTrain[xTrain.TotalBsmtSF>3000].index,axis=0)
+xTrain=xTrain.drop(xTrain[xTrain['1stFlrSF']>3000].index,axis=0)
+xTrain=xTrain.drop(xTrain[xTrain.GrLivArea>4500].index,axis=0)
+xTrain=xTrain.drop(xTrain[xTrain.MasVnrArea>1200].index,axis=0)
+xTrain=xTrain.drop(xTrain[xTrain.BsmtHalfBath>1.5].index,axis=0)
+xTrain=xTrain.drop(xTrain[xTrain.GarageArea>1200].index,axis=0)
 
-	# plt.subplot(121)
-	plt.scatter(xTrain[i],yTrain)
+for i in continuous_feature_index:
+
+	# plt.subplot(211)
+	# plt.scatter(np.log(xTrain[i]+1),yTrain)
+	# plt.xlabel(i)
+	# plt.subplot(212)
+	plt.scatter(xTrain[i],xTrain['SalePrice'])
 	plt.xlabel(i)
 	plt.show()
-# plt.scatter(xTrain['Neighborhood'],yTrain)
+# plt.hist(yTrain)
+# plt.ylabel('SalePrice')
 # plt.show()
+plt.scatter(xTrain['MasVnrArea'],yTrain)
+plt.show()
 # plt.hist(xTrain[categorical_feature_index])
 # plt.show()
