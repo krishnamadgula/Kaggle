@@ -13,13 +13,17 @@ from sklearn.cross_validation import KFold,train_test_split
 from xgboost.sklearn import XGBRegressor
 from sklearn.metrics import mean_squared_error
 import xgboost
+import random
 file=open('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\featureIndices','rb')
 continuous_feature_index,categorical_feature_index=pickle.load(file)
 file.close()
 file=open('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\DumpFile','rb')
 xTrain,yTrain,xTest=pickle.load(file)
 file.close()
-
+cont_feat=continuous_feature_index.tolist()
+# cont_feat.remove('Id')
+# xTrain=xTrain[cont_feat]
+# xTest=xTest[cont_feat]
 # Continuous
 # Index([u'Id', u'MSSubClass', u'LotFrontage', u'LotArea', u'OverallQual',
 #        u'OverallCond', u'YearBuilt', u'YearRemodAdd', u'MasVnrArea',
@@ -32,17 +36,31 @@ file.close()
 #        u'MoSold', u'YrSold', u'SalePrice']
 # 
 # Categorical
-# ['MSZoning', 'Street', 'Alley', 'LotShape'
-# , 'LandContour', 'Utilities', 'LotConfig', 'LandSlope', 'Neighborhood'
-# , 'Condition1', 'Condition2', 'BldgType', 'HouseStyle',
-# 'RoofStyle', 'RoofMatl', 'Exterior1st', 'Exterior2nd', 'MasVnrType', 'ExterQual',
+# ['MSZoning', .'Street', .'Alley', 'LotShape'
+# , 'LandContour', .'Utilities', 'LotConfig', 'LandSlope', 'Neighborhood'
+# , 'Condition1', .'Condition2', 'BldgType', 'HouseStyle',
+# 'RoofStyle', .'RoofMatl', 'Exterior1st', 'Exterior2nd', 'MasVnrType', 'ExterQual',
 # 'ExterCond', 'Foundation', 'BsmtQual', 'BsmtCond', 'BsmtExposure',
 # 'BsmtFinType1', 'BsmtFinType2', 'Heating', 'HeatingQC', 'CentralAir',
 # 'Electrical', 'KitchenQual', 'Functional', 'FireplaceQu', '
 # GarageType', 'GarageFinish', 'GarageQual', 'GarageCond', 
-# 'PavedDrive', 'PoolQC', 'Fence', 'MiscFeature', 'SaleType', 'SaleCondition']
+# 'PavedDrive', .'PoolQC', 'Fence', 'MiscFeature', 'SaleType', 'SaleCondition']
 # print xTrain[continuous_feature_index].info()
 # plt.scatter(-xTrain['YearRemodAdd']+xTrain['YrSold'],yTrain)
 # plt.show()
-plt.scatter(xTrain['Neighborhood'],yTrain)
-plt.show()
+print xTrain.info()
+norm=Normalizer()
+xTrain[cont_feat]=norm.fit_transform(xTrain[cont_feat])
+
+# f,ax=plt.subplots()
+plt.figure(1)
+for i in cont_feat:
+
+	# plt.subplot(121)
+	plt.scatter(xTrain[i],yTrain)
+	plt.xlabel(i)
+	plt.show()
+# plt.scatter(xTrain['Neighborhood'],yTrain)
+# plt.show()
+# plt.hist(xTrain[categorical_feature_index])
+# plt.show()

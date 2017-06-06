@@ -19,7 +19,8 @@ norm=Normalizer()
 #performing a basic analysis on the data from kaggle house sales
 train=pd.read_csv('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\train.csv')
 test=pd.read_csv('C:\Users\Krishna\DataScienceCompetetions\Kaggle\KaggleHouseSales\\test.csv')
-
+train=train.drop('Id',1)
+test=test.drop('Id',1)
 
 numeric_features_train=train.dtypes[train.dtypes!='object'].index
 object_features_train=train.dtypes[train.dtypes=='object'].index
